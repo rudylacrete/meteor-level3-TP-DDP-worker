@@ -1,9 +1,27 @@
 import { _ } from 'meteor/underscore';
+import { DDP } from 'meteor/ddp-client';
 
 export default class Workers{
   constructor(workers) {
     this.workers = [];
+    const self = this;
 
+    workers.forEach((workerUrl) => {
+      const worker = DDP.connect(workerUrl);
+      Tracker.autorun(function() {
+        if(worker.status().connected) {
+          console.log(`Worker connected ... ${workerUrl}`);
+          self.workers.push(worker);
+        }
+        else {
+          const i = self.workers.indexOf(worker);
+          if(i >= 0) {
+            console.log(`Worker disconnected ... ${workerUrl}`);
+            self.workers.splice(i, 1);
+          }
+        }
+      });
+    });
     this._nextWorker = 0;
   }
 
