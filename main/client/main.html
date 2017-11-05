@@ -1,0 +1,24 @@
+<head>
+  <title>main</title>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> main}}
+</body>
+
+<template name="main">
+  <div id="main" class='container'>
+    <div>
+      <button id='processVideo' class="btn btn-success">Process Video</button>
+    </div>
+    <pre>
+      <code># Results
+      {{#each result in results}}
+        {{result.message}}
+      {{/each}}
+      </code>
+    </pre>
+  </div>
+</template>
